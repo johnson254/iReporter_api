@@ -27,6 +27,7 @@ class TestUsersTestcase(BaseTestCase):
         response_msg = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 401)
         self.assertIn("Email is required",response_msg["message"])
+        self.assertEqual(response.get_data, 201)
 
     def test_users_registration_correct_registration(self):
         """tests  correct login registration"""

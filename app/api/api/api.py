@@ -13,6 +13,7 @@ app.config['SECRET_KEY'] = "b'secert key'"
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
 jwt = JWTManager(app)
+
 INCIDENTS = []
 USERS = []
 blacklist = set()
@@ -97,7 +98,7 @@ def register_record():
     description = new_record.get('description')
     category = new_record.get('category')
     location = new_record.get('location')
-    dict_data = {'Recordsname': recordname, 'Description': description,
+    dict_data = {'Recordsname': recordsname, 'Description': description,
                  'Category': category, 'Location': location}
 
     if validate.key_blank(**dict_data):
