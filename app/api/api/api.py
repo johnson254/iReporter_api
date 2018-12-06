@@ -1,18 +1,16 @@
-from flask import Flask, jsonify, request
+from flask import jsonify, request
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_raw_jwt
 )
-from passlib.hash import sha256_crypt
-
 from app.models.records import Records
 from app.models.users import User
-from app.api import validate
-app = Flask(__name__)
-app.config['SECRET_KEY'] = "b'secert key'"
-app.config['JWT_BLACKLIST_ENABLED'] = True
-app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
-jwt = JWTManager(app)
+from passlib.hash import sha256_crypt
+
+
+from app.api.api import validate
+
+jwt = JWTManager()
 
 INCIDENTS = []
 USERS = []
@@ -98,7 +96,7 @@ def register_record():
     description = new_record.get('description')
     category = new_record.get('category')
     location = new_record.get('location')
-    dict_data = {'Recordsname': recordsname, 'Description': description,
+    dict_data = {'Recordsname': record_name, 'Description': description,
                  'Category': category, 'Location': location}
 
     if validate.key_blank(**dict_data):
@@ -108,10 +106,10 @@ def register_record():
 
     available_record = [Rec.recordname for Rec in INCIDENTS]
 
-    if recordname in available_record:
+    if record_name in available_record:
         return jsonify({'message': 'Records already exists'}), 409
 
-    new_record = Records(recordname, description, location, category)
+    new_record = Records(record_name, description, location, category)
     INCIDENTS.append(new_record)
     return jsonify({'message': 'Records successfully registered'}), 201
 
@@ -191,3 +189,4 @@ def delete_record_by_id(record_id):
         INCIDENTS.remove(target_record)
         return jsonify({'message': 'Records successfully deleted'}), 202
     return jsonify({'message': 'Records not found'}), 404
+

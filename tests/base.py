@@ -1,4 +1,5 @@
-from app.api.api import INCIDENTS, USERS
+import app
+from app.api.api.api import INCIDENTS, USERS
 from app.models.records import Records
 from app.models.users import User
 from unittest import TestCase
